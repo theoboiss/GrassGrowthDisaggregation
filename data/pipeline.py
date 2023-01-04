@@ -1,8 +1,7 @@
 # Import libraries
 
-from data_import import *
-from data_preprocessing import *
-
+from data.extraction import *
+from data.preprocessing import *
 
 def build(model):
     # Import data

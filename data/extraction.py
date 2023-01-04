@@ -70,9 +70,9 @@ def concatenateCcdVa(ccd_prepared, va_prepared):
 # Serialisation
 
 def saveDataset(d, name):
-    with open(name+".pickle", "wb") as outfile:
+    with open("datasets/"+name+".pickle", "wb") as outfile:
         pickle.dump(d, outfile)
 
 def loadDataset(name):
-    with open(name+".pickle", "rb") as infile:
+    with open("datasets/"+name+".pickle", "rb") as infile:
         return pickle.load(infile)
