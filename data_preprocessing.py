@@ -63,15 +63,19 @@ def convertDatasetLSTM(X, Y, nb_annees = 5, window_size = 4, nb_decades = 37, pr
     for data_id_index in range(0, len(X) - data_id_size, data_id_size): # for each batch
         batch_end_index = data_id_index + data_id_size
         # build samples by concatenating all entries that fit in the window
-        for index in range(data_id_index, batch_end_index - 1): # for each window in the batch # for each window in the batch
+        for index in range(data_id_index, batch_end_index - window_size): # for each window in the batch # for each window in the batch
             #x_c = X.iloc[index+1] # concatenate climate data of entries that fit in the window
             #x_g = Y.iloc[index] # concatenate daily growth of the beginning of the window
             #x_c = x_c.values.reshape(-1)
             #x_g = x_g.values.reshape(-1)
             #x = list(x_c) + list(x_g)
-            x = np.concatenate((X.iloc[[index+1]].values.reshape(-1), \
-                                Y.iloc[[index]].values.reshape(-1)),axis = 0)
-            y = Y.iloc[index+1] # daily growth of the end of the window
+            x = list()
+            for i in range(window_size):
+                x_i = np.concatenate((X.iloc[index+1+i].values.reshape(-1), \
+                                        Y.iloc[index+i].values.reshape(-1)),axis = 0)
+                x.append(x_i)
+ 
+            y = Y.iloc[index+window_size] # daily growth of the end of the window
             new_X.append(x)
             new_Y.append(y)
             
