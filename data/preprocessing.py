@@ -32,7 +32,7 @@ def convertDatasetALGO(convertSample, editYALGO, X, Y, nb_annees = 5, window_siz
     last_progression = 0
     
     # Initialise the daily growths variables only
-    Y_feats = editYALGO(Y.copy(), nb_decades, window_size)
+    Y_feats = editYALGO(Y, nb_decades, window_size)
 
     print(0, '%')
     for years_index in range(0, len(X) - nb_decades - window_size, nb_decades): # for each year
@@ -54,7 +54,7 @@ def convertDatasetALGO(convertSample, editYALGO, X, Y, nb_annees = 5, window_siz
 
 
 def editYSVR(Y, nb_decades, window_size, last_daily_growth= 7.17, first_daily_growths= 9.57):
-    Y_feats = Y
+    Y_feats = Y.copy()
     Y_feats.loc[Y_feats.index % nb_decades == (nb_decades-1)] = last_daily_growth # init of the last daily growth of each year
     Y_feats.loc[Y_feats.index % nb_decades < (window_size-1)] = first_daily_growths # init of the first daily growths of each year
     return Y_feats
@@ -73,8 +73,7 @@ def convertDatasetSVR(X, Y, nb_annees = 5, window_size = 4, nb_decades = 37, pro
 
 
 def editYLSTM(Y, nb_decades, window_size, last_daily_growth= 7.17, first_daily_growths= 9.57):
-    Y_feats = Y
-    
+    Y_feats = Y.copy()
     Y_feats.loc[Y_feats.index % nb_decades == (nb_decades-1)] = last_daily_growth # init of the last daily growth of each year
     Y_feats.loc[Y_feats.index % nb_decades < (window_size-1)] = first_daily_growths # init of the first daily growths of each year
     Y_feats = pd.concat([pd.DataFrame([[last_daily_growth]], columns= Y_feats.columns), Y_feats])
