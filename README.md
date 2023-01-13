@@ -18,3 +18,20 @@ The disaggregation problem can also be seen as a special case of a more general 
 
 ## Project structure
 
+data: Data preparation and pre-processing
+|- extraction.py: Extract raw or serialized data from files
+|- preprocessing.py: Transform structured data into model-specific datasets
+|- pipeline.py: Build all the data pipeline
+|- window.py: Define the sliding window to reinject LSTM's predictions in its features
+
+lstm_model: Serialized lstm model
+svr_model.pkl: Serialized svr model
+svr_automl.pkl: Serialized svr tuner
+
+datasets: Serialized datasets (if not created, you have to create it manually)
+dataverse_files: Raw data (if not downloaded, you have to get it at https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.15454/FD9FHU)
+
+data_analysis.ipynb: Study and explanation of all the data pipeline
+svr.ipynb: Training and evaluation of SVR algorithm
+lstm.ipynb: Training and evaluation of LSTM algorithm
+SlidingWindow_tests.ipynb: Quality control of the sliding window for LSTM's reinjections
