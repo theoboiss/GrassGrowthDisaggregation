@@ -6,10 +6,16 @@ import pandas as pd
 
 # Data preprocessing
 
-def splitDatasetGeo(dataset):
+def splitDatasetGeo(dataset, validation= False):
     safran_quantile_07 = dataset.drop_duplicates("safran")["safran"].quantile(0.7)
     train_index = dataset[dataset["safran"] <= safran_quantile_07].index
     test_index = dataset[dataset["safran"] > safran_quantile_07].index
+
+    if validation:
+        safran_test_median = dataset[dataset.index.isin(test_index)].drop_duplicates("safran")["safran"].median()
+        val_index = dataset[(dataset["safran"] <= safran_test_median)
+                            & (dataset["safran"] > safran_quantile_07)].index
+        test_index = dataset[dataset["safran"] > safran_test_median].index
 
     data_columns = ["Tmin", "Tmax", "Tmoy", "Rain", "RG", "im", "croissance", "cumul_croissance"]
     X = dataset.loc[:, data_columns]
@@ -21,6 +27,11 @@ def splitDatasetGeo(dataset):
     Y_train = Y[Y.index.isin(train_index)]
     Y_test = Y[Y.index.isin(test_index)]
     
+    if validation:
+        X_val = X[X.index.isin(val_index)]
+        Y_val = Y[Y.index.isin(val_index)]
+        return X_train, Y_train, X_val, Y_val, X_test, Y_test
+    
     return X_train, Y_train, X_test, Y_test
 
 
@@ -30,6 +41,7 @@ def splitDatasetGeo(dataset):
 def convertDatasetALGO(convertSample, editYALGO, X, Y, nb_annees = 5, window_size = 4, nb_decades = 37, progression_step = 20):
     new_X, new_Y = list(), list()
     last_progression = 0
+    Y_lost = Y.iloc[:window_size-1]
     
     # Initialise the daily growths variables only
     Y_feats = editYALGO(Y, nb_decades, window_size)
@@ -50,7 +62,7 @@ def convertDatasetALGO(convertSample, editYALGO, X, Y, nb_annees = 5, window_siz
             print(int(progression), '%')
             last_progression = progression
     print(100, '%')
-    return new_X, new_Y
+    return np.array(new_X), np.array(new_Y), np.array(Y_lost)
 
 
 def editYSVR(Y, nb_decades, window_size, last_daily_growth= 7.17, first_daily_growths= 9.57):
