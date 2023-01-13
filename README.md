@@ -19,10 +19,10 @@ The disaggregation problem can also be seen as a special case of a more general 
 ## Project structure
 
 data: Data preparation and pre-processing
-|- extraction.py: Extract raw or serialized data from files
-|- preprocessing.py: Transform structured data into model-specific datasets
-|- pipeline.py: Build all the data pipeline
-|- window.py: Define the sliding window to reinject LSTM's predictions in its features
+- extraction.py: Extract raw or serialized data from files
+- preprocessing.py: Transform structured data into model-specific datasets
+- pipeline.py: Build all the data pipeline
+- window.py: Define the sliding window to reinject LSTM's predictions in its features
 
 lstm_model: Serialized lstm model
 svr_model.pkl: Serialized svr model
