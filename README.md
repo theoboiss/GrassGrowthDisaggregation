@@ -1,6 +1,4 @@
-# AI Project - Polytech Tours
-
-## Grass growth disaggregation: Study and development of a deep learning solution for plant growth prediction
+# Grass growth disaggregation: Study and development of a deep learning solution for plant growth prediction
 
 Supervised by Prof. Dr. Nicolas RAGOT
 
